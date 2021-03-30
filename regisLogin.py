@@ -102,12 +102,14 @@ def upd_done():
     f3.write(f"{encrypt}")
     tmsg.showinfo("Updated", "Your password is successfully updated. You can now log in with this password.")
     screen6.destroy()
+    os.system(f"attrib +h /s /d {user2}.txt")
     # Label(screen7, text="Updated").pack()
     f3.close()
 
 
 def check2():
     global u_info
+    os.system(f"attrib -h /s /d {user2}.txt")
     statusvar = StringVar()
     statusvar.set("Ready")
     sbar = Label(screen6, textvariable = statusvar, relief = SUNKEN,anchor = "center")
@@ -185,6 +187,7 @@ def check2():
 
 
 def search1(event=''):
+    global username_info
     screen5.destroy()
     global screen6
     screen6 =Toplevel(screen)
@@ -196,15 +199,19 @@ def search1(event=''):
     if user2 in list_of:
         f2 = open(f"{user2}", "r")
         check = f2.read().splitlines()
-        Label(screen6,text="User Found").pack()
+        screen6.config(bg="gray15")
+        Label(screen6,text="USER FOUND", bg="gray20", fg="gray80",font="roboto 20 bold",width=25, height=2).pack(fill=BOTH)
+        Label(screen6, text='',bg='gray15').pack(pady=10)
+        Label(screen6, text="Enter New Password",bg="gray15", fg="gray75", font="arial 15 bold").pack(pady=10)
         global userupname
         userupname = StringVar()
-        finalUpEntry=Entry(screen6, textvariable=userupname)
-        finalUpEntry.pack()
-        b = Button(screen6,text="Update", command=check2)
+        finalUpEntry=Entry(screen6, textvariable=userupname,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",width=40,font="arial 15 bold",justify=CENTER)
+        finalUpEntry.pack(pady=10)
+        b = Button(screen6,text="Update", command=check2,bg="gray15", fg="gray75", font="arial 15 bold")
         b.pack()
    
     else:
+        screen6.destroy()
         d = tmsg.showerror("Error !", "Issue while searching User.\n• Check username\n• Spelling Mistake\n• Not Exists\nIf following info are wrong,\nthen type a mail to\nhritikkarn@gmail.com")
     user_verify1.set("")
     
@@ -220,6 +227,8 @@ def delete2():
 #-------------------------------------------------------------
 def forget(event=''):
     global screen5
+    global username_info
+    user1 = user_verify.get()
     screen2.destroy()
     screen5 = Toplevel(screen)
     screen5.geometry("850x750")
@@ -268,7 +277,7 @@ def user_not_found():
             
     
 
-def login_verify():
+def login_verify(event=''):
     global user1
     global pass1
     user1 = user_verify.get()
@@ -298,12 +307,11 @@ def login_verify():
             
     screen2.destroy()
             
-def shpass(args):
+def shpass(event=''):
     p = pass_verify.get()
-    if args == 1:
-        sp.config(text = f'{p}')
-    else:
-        sp.config(text = 'Show Password ?')
+    sp.config(text = f'{p}')
+def shpass1(event=''):
+    sp.config(text = 'Show Password ?')
 
 def login(event=''):
     global sp, sp1
@@ -330,10 +338,12 @@ def login(event=''):
     pass_entry1=Entry(screen2, textvariable=pass_verify, width=25,highlightcolor="yellow",highlightthickness=2,font="arial 15 bold",show="•")
     pass_entry1.pack ()
    
-    sp = Button(screen2,text="Show Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1,relief=FLAT, command=lambda:shpass(1))
-    sp1 = Button(screen2,text="Hide Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1, command=lambda:shpass(2))
+    sp = Button(screen2,text="Show Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1,relief=FLAT, command=shpass)
+    sp1 = Button(screen2,text="Hide Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1, command=shpass1)
     sp.pack(anchor="n",pady=5)
+    sp.bind("<Return>", shpass)
     sp1.pack(anchor="n",pady=5)
+    sp1.bind("<Return>", shpass1)
     
     
     fb = Button(screen2,text="Forgot Password ?",fg="orange",bg="gray15",font="serif 12 italic", width=15, height=1, command=forget)
@@ -342,7 +352,9 @@ def login(event=''):
     
     Label(screen2,text="\n",bg="gray15").pack()
     
-    Button(screen2,text="Login",bg="gray15",fg="gray60",width=15,font="serif 15 bold", command=login_verify).pack()
+    lb = Button(screen2,text="Login",bg="gray15",fg="gray60",width=15,font="serif 15 bold", command=login_verify)
+    lb.pack()
+    lb.bind("<Return>", login_verify)
   #  Label(screen2,text="\n",bg="gray15").pack()
     
     Label(screen2,text="\n",bg="gray15").pack()
@@ -459,11 +471,11 @@ def rshp(args):
 
 
 def submit ():
+    global username
     username_info = username.get()
     password_info = password.get()
     cont_info = cont_val.get()
     name_info = name_val.get()
-    
 
     global key
     alp = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_-+={}[]:;\'\"|\\?/>.<,12345678901234567891234567890"
@@ -526,6 +538,7 @@ def register (event=''):
     Label(screen1,text="Contact*",bg="gray15",fg='gray60', font="serif 15 italic", underline=3).pack()
     contact_entry=Entry(screen1, textvariable=cont_val,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",width=40,font="arial 12 bold",justify=CENTER)
     contact_entry.pack(padx=10,pady=10)
+
     lbl = Label (screen1, text="",bg="gray15")
     lbl.pack()
     Label(screen1,text="Username*",bg="gray15",fg='gray60',font="serif 15 italic", underline=3).pack()
