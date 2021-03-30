@@ -90,14 +90,102 @@ def addBook():
 
 
 def upd_done():
-    uun_info = userupname.get()
-    screen7 = Toplevel(screen)
+    # screen7 = Toplevel(screen)
+    alp = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_-+={}[]:;\'\"|\\?/>.<,12345678901234567891234567890"
+    key = 5
+    encrypt = ''
+    for i in u_info:
+        position = alp.find(i)
+        newposition = position+5
+        encrypt += alp[newposition]
     f3 = open(f"{user2}"+".txt", "w")
-    f3.write(f"\n{uun_info}")
-    Label(screen7, text="Updated").pack()
+    f3.write(f"{encrypt}")
+    tmsg.showinfo("Updated", "Your password is successfully updated. You can now log in with this password.")
+    screen6.destroy()
+    # Label(screen7, text="Updated").pack()
     f3.close()
 
-def search1():
+
+def check2():
+    global u_info
+    statusvar = StringVar()
+    statusvar.set("Ready")
+    sbar = Label(screen6, textvariable = statusvar, relief = SUNKEN,anchor = "center")
+    sbar.pack(side = BOTTOM, fill = X)
+    u_info = userupname.get()
+    x = True
+    while x:  
+        if (len(u_info)==0):
+            put = "Fill the box(s) first."
+            statusvar.set(f'{put}\nScreen update after 6 seconds')
+            sbar.update()
+            # time.sleep(3)
+            statusvar.set("Ready Now")
+            sbar.update()
+            break
+        elif (len(u_info)<=8 or len(u_info)>12):
+            
+            # time.sleep(1)
+            put = "Password is not matching with its criteria."
+            statusvar.set(f'{put}\nScreen update after 3 seconds')
+            sbar.update()
+            # time.sleep(3)
+            statusvar.set("Ready Now")
+            sbar.update()
+            break
+        elif not re.search("[a-z]",u_info):
+            put = "Password is not matching with its criteria."
+            statusvar.set(f'{put}\nScreen update after 3 seconds')
+            sbar.update()
+            # time.sleep(3)
+            statusvar.set("Ready Now")
+            sbar.update()
+            break
+        elif not re.search("[0-9]",u_info):
+            put = "Password is not matching with its criteria."
+            statusvar.set(f'{put}\nScreen update after 3 seconds')
+            sbar.update()
+            # time.sleep(3)
+            statusvar.set("Ready Now")
+            sbar.update()
+            break
+        elif not re.search("[A-Z]",u_info):
+            put = "Password is not matching with its criteria."
+            statusvar.set(f'{put}\nScreen update after 3 seconds')
+            sbar.update()
+            # time.sleep(3)
+            statusvar.set("Ready Now")
+            sbar.update()
+            break
+        elif not re.search("[$#@]",u_info):
+            put = "Password is not matching with its criteria."
+            statusvar.set(f'{put}\nScreen update after 3 seconds')
+            sbar.update()
+            # time.sleep(3)
+            statusvar.set("Ready Now")
+            sbar.update()
+            break
+        elif re.search("\s",u_info):
+            put = "Password is not matching with its criteria."
+            statusvar.set(f'{put}\nScreen update after 3 seconds')
+            sbar.update()
+            # time.sleep(3)
+            statusvar.set("Ready Now")
+            sbar.update()
+            break
+        else:
+            statusvar.set("Updated")
+            sbar.update()
+            upd_done()
+            break
+
+
+
+
+
+
+def search1(event=''):
+    screen5.destroy()
     global screen6
     screen6 =Toplevel(screen)
     screen6.geometry("850x750")
@@ -106,15 +194,15 @@ def search1():
     user2 = user_verify1.get()
     list_of = os.listdir()
     if user2 in list_of:
-        f2 = open(f"{user2}"+".txt", "r")
+        f2 = open(f"{user2}", "r")
         check = f2.read().splitlines()
         Label(screen6,text="User Found").pack()
-        
         global userupname
         userupname = StringVar()
-        finalUpEntry=Entry(screen6, textvariable=userupname).pack()
-        
-        Button(screen6,text="Update", command=upd_done).pack()
+        finalUpEntry=Entry(screen6, textvariable=userupname)
+        finalUpEntry.pack()
+        b = Button(screen6,text="Update", command=check2)
+        b.pack()
    
     else:
         d = tmsg.showerror("Error !", "Issue while searching User.\n• Check username\n• Spelling Mistake\n• Not Exists\nIf following info are wrong,\nthen type a mail to\nhritikkarn@gmail.com")
@@ -130,22 +218,24 @@ def delete2():
         h = tmsg.showinfo("Rated","Thanks For rating us\nWe'll try to make it better.")
 
 #-------------------------------------------------------------
-def forget():
+def forget(event=''):
     global screen5
     screen2.destroy()
     screen5 = Toplevel(screen)
     screen5.geometry("850x750")
     screen5.title("Forget Password")
     screen5.configure(background="gray15")
-    Label(screen5, text="PASSWORD UPDATION", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 10 bold").pack()
+    Label(screen5, text="PASSWORD UPDATION", bg="gray20",fg="gray75",width="30", height="2",font="Roboto 20 bold").pack(fill=BOTH)
     Label(screen5, text="",bg="gray15").pack()
-    Label(screen5, text="User-ID",bg="gray15",fg="gray75",font="Roboto 8 bold").pack()
+    Label(screen5, text="User-ID",bg="gray15",fg="gray75",font="Roboto 15 bold").pack()
     global user_entry2
     global user_verify1
     user_verify1 = StringVar()
-    us_entry2 = Entry(screen5,text=user_verify1, width=20,border=2).pack()
+    us_entry2 = Entry(screen5,text=user_verify1, width=40,border=3,font="arial 15 bold").pack()
     Label(screen5, text="\n",bg="gray15").pack()
-    Button(screen5,text="Search",bg="gray15",fg="gray75",font="Arial 6 bold",border=6, command=search1).pack()
+    sm = Button(screen5,text="Search",bg="gray15",fg="gray75",font="Arial 12 bold",border=6, command=search1)
+    sm.pack()
+    sm.bind("<Return>", search1)
     Label(screen5, text="\n\n",bg="gray15").pack()
 
 
@@ -176,8 +266,11 @@ def pass_not_reco():
 def user_not_found():
     c=tmsg.showinfo("User Error","User Identity is not found,\nPlease Check User-Id.\n\tOR\nCreate a new one.\nTHANKS !!")
             
+    
+
 def login_verify():
     global user1
+    global pass1
     user1 = user_verify.get()
     pass1 = pass_verify.get()
 
@@ -194,7 +287,7 @@ def login_verify():
     
     lof = os.listdir()
     if user1 in lof:
-        f1 = open(f"{user1}", "r")
+        f1 = open(f"{user1}"+".txt", "r")
         verify =f1.read().splitlines()
         if decrypt in verify:
             login_success()
@@ -205,16 +298,23 @@ def login_verify():
             
     screen2.destroy()
             
+def shpass(args):
+    p = pass_verify.get()
+    if args == 1:
+        sp.config(text = f'{p}')
+    else:
+        sp.config(text = 'Show Password ?')
 
-def login():
+def login(event=''):
+    global sp, sp1
     global screen2
     screen2 = Toplevel(screen)
     screen2.title("Login")
     screen2.geometry("850x750")
     screen2.configure(background="gray15")
-    Label(screen2, text="LOGIN", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 15 bold").pack(fill=X)
+    Label(screen2, text="LOGIN", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 20 bold").pack(fill=X)
     Label(screen2,text="",bg="gray15").pack()
-    Label(screen2,text="Username", bg="gray15", fg="gray60",font='serif 11 italic').pack()
+    Label(screen2,text="Username", bg="gray15", fg="gray60",font='serif 15 italic').pack()
     #Label(screen2,text="",bg="gray15").pack()
     global user_entry1
     global pass_entry1
@@ -223,33 +323,36 @@ def login():
     user_verify =StringVar()
     pass_verify =StringVar ()
     
-    user_entry1=Entry(screen2, text=user_verify, width=25,border=3,highlightcolor="yellow",highlightthickness=2,font="arial 10 bold"). pack ()
+    user_entry1=Entry(screen2, text=user_verify, width=25,highlightcolor="yellow",highlightthickness=2,font="arial 15 bold"). pack ()
     Label(screen2,text="",bg="gray15").pack()
-    Label(screen2,text="Password", bg="gray15", fg="gray60",font='serif 8 italic').pack()
+    Label(screen2,text="Password", bg="gray15", fg="gray60",font='serif 15 italic').pack()
    # Label(screen2,text="",bg="gray15").pack()
-    pass_entry1=Entry(screen2, text=pass_verify, width=25,border=8,highlightcolor="yellow",highlightthickness=4,show="•"). pack ()
+    pass_entry1=Entry(screen2, textvariable=pass_verify, width=25,highlightcolor="yellow",highlightthickness=2,font="arial 15 bold",show="•")
+    pass_entry1.pack ()
    
-    Button(screen2,text="Forgot Password ?",fg="red",bg="gray15",font="serif 7 italic", width=12, height=1, command=forget).pack(anchor="e")
+    sp = Button(screen2,text="Show Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1,relief=FLAT, command=lambda:shpass(1))
+    sp1 = Button(screen2,text="Hide Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1, command=lambda:shpass(2))
+    sp.pack(anchor="n",pady=5)
+    sp1.pack(anchor="n",pady=5)
+    
+    
+    fb = Button(screen2,text="Forgot Password ?",fg="orange",bg="gray15",font="serif 12 italic", width=15, height=1, command=forget)
+    fb.pack(anchor="n",pady=20)
+    fb.bind("<Return>", forget)
     
     Label(screen2,text="\n",bg="gray15").pack()
-    Button(screen2,text="Login",bg="gray15",fg="gray60",font="serif 12 bold", command=login_verify).pack()
+    
+    Button(screen2,text="Login",bg="gray15",fg="gray60",width=15,font="serif 15 bold", command=login_verify).pack()
   #  Label(screen2,text="\n",bg="gray15").pack()
     
     Label(screen2,text="\n",bg="gray15").pack()
-    Button(screen2, text="Close",bg="gray15",fg="red", font="Roboto 7 bold",border=3, highlightbackground="red",command=screen2.destroy).pack(anchor="ne")
+    Button(screen2, text="Close",bg="gray15",fg="red", font="Roboto 15 bold",border=2, highlightbackground="red",command=screen2.destroy).pack(anchor="ne",pady=10)
 
-def check():
+def check(event=''):
     cont_info = cont_val.get()
     password_info = password.get()
     c = chb_val.get()
 
-    # if c == 'Yes':
-    #     print("Its selected")
-    #     submit()
-    # else:
-    #     print("Its not selected")
-
-    
     x = True
     while x:  
         if (len(password_info)==0):
@@ -310,14 +413,12 @@ def check():
             x=False
             # submit()
             if c == 'Yes':
-                # print("Its selected")
                 submit()
             else:
                 statusvar.set("Please check the box")
                 sbar.update()
                 # print("Its not selected")
             break
-    
     
     try:
         int(cont_info)
@@ -349,8 +450,12 @@ def check():
         time.sleep(3)
         statusvar.set("Ready Now")
 
-    
-
+def rshp(args):
+    pg = password.get()
+    if args == 1:
+        rsp.config(text = f'{pg}')
+    else:
+        rsp.config(text = 'Show Password ?')
 
 
 def submit ():
@@ -370,19 +475,30 @@ def submit ():
         encrypt += alp[newposition]
         # print(encrypt)
 
-    f = open(username_info,"w")
-    f.write(f"{name_info}\n{cont_info}\n{username_info}\n{encrypt}")
+    f = open(f"{username_info}","w")
+    psaver = open(f"{username_info}"+".txt", "w")
+    f.write(f"{name_info}\n{cont_info}\n{username_info}")
+    psaver.write(f"{encrypt}")
     a = tmsg.showinfo("Success",f"Name: {name_info}\nContact: {cont_info}\nUser-ID: {username_info}\nPassword: {password_info}\n")
     f.close()
-        
+    psaver.close()
+    
+    os.system(f"attrib +h /s /d {username_info}.txt")
+    os.system(f"attrib +h /s /d {username_info}")
+
     name_val.set("")
     cont_val.set("")
     username.set("")
     password.set("")
+    screen1.update()
+    time.sleep(1)
+    screen1.destroy()
 
 
+def exit_command_of_scr1(event=''):
+    screen1.destroy()
 
-def register ():
+def register (event=''):
     global username
     global password
     global name_val
@@ -390,6 +506,7 @@ def register ():
     global screen1
     global lbl
     global chb_val
+    global rsp,rsp1
     chb_val = StringVar()
     name_val = StringVar()
     cont_val = StringVar()
@@ -397,38 +514,50 @@ def register ():
     password = StringVar()
     screen1 = Toplevel(screen)
     screen1.title("Registration")
-    screen1.geometry("850x750")
+    screen1.geometry("870x800")
+    screen1.minsize(870,800)
     screen1.configure(background="gray15")
     Label(screen1, text="REGISTER", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 20 bold").pack(fill=X)
     Label (screen1,text="",bg="gray15").pack ()
     Label(screen1,text="Name*",bg="gray15",fg='gray60', font="serif 15 italic", underline=0).pack()
-    name_entry=Entry(screen1, textvariable=name_val,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",width=40,font="arial 12 bold")
+    name_entry=Entry(screen1, textvariable=name_val,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",width=40,font="arial 12 bold",justify=CENTER)
     name_entry.pack(padx=5,pady=5)
     Label (screen1, text="",bg="gray15").pack()
     Label(screen1,text="Contact*",bg="gray15",fg='gray60', font="serif 15 italic", underline=3).pack()
-    contact_entry=Entry(screen1, textvariable=cont_val,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",width=40,font="arial 12 bold")
+    contact_entry=Entry(screen1, textvariable=cont_val,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",width=40,font="arial 12 bold",justify=CENTER)
     contact_entry.pack(padx=10,pady=10)
     lbl = Label (screen1, text="",bg="gray15")
     lbl.pack()
     Label(screen1,text="Username*",bg="gray15",fg='gray60',font="serif 15 italic", underline=3).pack()
-    user_entry=Entry(screen1, textvariable=username,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",width=40,font="arial 12 bold").pack(padx=10,pady=10)
+    user_entry=Entry(screen1, textvariable=username,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",width=40,font="arial 12 bold",justify=CENTER).pack(padx=10,pady=10)
     Label (screen1, text="",bg="gray15").pack()
     Label(screen1,text="Password*",bg="gray15",fg='gray60',font="serif 15 italic", underline=4).pack()
-    password_entry=Entry(screen1, textvariable=password,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",show="•",width=40,font="arial 12 bold").pack(padx=10,pady=10)
+    password_entry=Entry(screen1, textvariable=password,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",show="•",width=40,font="arial 12 bold",justify=CENTER)
+    password_entry.pack(padx=10,pady=10)
+    password_entry.bind("<Return>", check)
+    rsp = Button(screen1,text="Show Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1,relief=FLAT, command=lambda:rshp(1))
+    rsp1 = Button(screen1,text="Hide Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1, command=lambda:rshp(2))
+    rsp.pack(anchor="n",pady=5)
+    rsp1.pack(anchor="n",pady=5)
     
     Label(screen1,text="Password must contain 8 character's (12+ recommended):\n• Atleast 1-Uppercase\n• Atleast 1-Lowercase\n• Atleast 1-Special Character\nAtleast 1-number\nTo best security.",bg="gray15",fg="gray75", highlightbackground="gray15",highlightthickness=3,font="serif 10 bold").pack()
 
-    chb = Checkbutton(screen1,text="All the above boxes are filled correctly !",variable=chb_val,bg="gray15",fg="black", highlightbackground="gray15",highlightthickness=3,font="serif 15 bold",onvalue='Yes', offvalue='No').pack()
+    chb = Checkbutton(screen1,text="All the above boxes are filled correctly !",variable=chb_val,bg="gray15",fg="black", highlightbackground="gray15",highlightthickness=3,font="serif 15 bold",onvalue='Yes', offvalue='No')
+    chb.pack()
     global statusvar, sbar
     statusvar = StringVar()
     statusvar.set("Ready")
     sbar = Label(screen1, textvariable = statusvar, relief = SUNKEN,anchor = "center")
     sbar.pack(side = BOTTOM, fill = X)
     Label(screen1,text="",bg="gray15").pack()
-    Button(screen1,text="Submit",bg="gray15",fg="gray60",font="arial 10 bold",width=15, command=check).pack()
+    sbm = Button(screen1,text="Submit",bg="gray15",fg="gray60",font="arial 10 bold",width=15, command=check)
+    sbm.pack()
+    sbm.bind("<Return>", check)
     
     Label (screen1, text="\n",bg="gray15").pack()
-    Button(screen1, text="Close",bg="yellow",fg="red", font="Roboto 10 bold",border=3, highlightbackground="red",command=screen1.destroy).pack(anchor="ne")
+    clb = Button(screen1, text="Close",bg="yellow",fg="red", font="Roboto 10 bold",border=3, highlightbackground="red",command=screen1.destroy)
+    clb.pack(anchor="ne")
+    clb.bind("<Return>", exit_command_of_scr1)
 
 
 def main_screen():
@@ -443,15 +572,18 @@ def main_screen():
     Label(screen,text="",bg="black").pack()
     rgb=Button(screen, text="Register",bg="black", borderwidth=4,font="serif 15 italic",width="15",height="1",fg="white",command=register)
     rgb.pack(padx=10,pady=10)
+    rgb.bind("<Return>", register)
     Label(screen,text="\n",bg="black").pack()
     lgb=Button(screen, text="Login",bg="black", borderwidth=4,font="serif 15 italic",width="15",height="1",highlightbackground="yellow",fg="white", command=login)
     lgb.pack(padx=10,pady=10)
+    lgb.bind("<Return>", login)
     
     Label(screen,text="",bg="black").pack()
     
     Label(screen,text="",bg="black").pack()
     ext = Button(screen, text="Exit", bg="black", borderwidth=4,font="serif 15 italic",width=15,height=1,highlightbackground="yellow",fg="white", command=quit)
     ext.pack()
+    ext.bind("<Return>", quit)
     Label(screen,text="\n\n\n",bg="black").pack()
     Label(screen,text="NOTE :",bg="black",fg="red", font="ms 15 bold").pack()
     Label(screen,text="This is a library management system. \nIn which students have choice to read books.\n\nIn a new window, click on\n[x] or [close/exit] to close particular window.",bg="black",fg="red", font="ms 15 bold").pack()

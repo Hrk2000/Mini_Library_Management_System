@@ -1,3 +1,13 @@
+
+Version 2.0:
+* Update the Registeration Window
+* Update the Login Window
+   • Update the forgot password in the login window (90% done , 10% for designing(comming soon))
+* Show  and Hide password is now available for registration and login window.
+
+Version 3.0 will will comming as soon as possible.
+
+
 This is a mini project of Library Management.
 
 It is now in progress and for now i haven't committed any text upper the code.
