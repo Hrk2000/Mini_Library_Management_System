@@ -1,6 +1,6 @@
 
 
-# Versio 2.2.1:
+# Version 2.2.1:
 * Update the Login Window
 * Minor Bug Fixed
 
@@ -8,7 +8,7 @@
 # Version 2.1.0:
 * Not open the file directly. (Use cmd , powershell or linux shell)
 * Issue solved:
-• while registeration (Permission denied, while saving the file)
+â€¢ while registeration (Permission denied, while saving the file)
 
 
 # Version 2.0.5:
