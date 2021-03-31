@@ -5,21 +5,66 @@ import time
 import tkinter.messagebox as tmsg
 
 
+
+def mylib():
+    screen13 = Toplevel(screen)
+    screen13.title("Own Books")
+    screen13.config(bg="gray15")
+    screen13.geometry("850x750")
+    Label(screen13, text="MY-LIBRARY", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 20 bold").pack(fill=X)
+    f = open(f"{user1}books")
+    vf= f.read()
+    if vf == '':
+        Label(screen13, text="File is Empty, Go to Get Book", bg = "gray15", fg="gray75", font="serif 12 bold").pack()
+    else:
+        Label(screen13, text = vf, bg = "gray15", fg = "gray75", font="roboto 13 bold").pack()
+
+def rtnbk():
+    i = ask.get().upper()
+    output = []
+    g = open(f"{user1}books")
+    f = open("booklist.txt", "a")
+    for line in g:
+        if not i in line:
+            output.append(line)
+        else:
+            Label(screen12, text="Done").pack()
+    f.write(f"\n{line}")
+    f.close()
+    g = open(f"{user1}books", "w")
+    g.writelines(output)
+    g.close()
+
+
 def rtrn():
-    pass 
+    global screen12
+    screen12 = Toplevel(screen)
+    screen12.title("Returning")
+    screen12.config(bg="gray15")
+    screen12.geometry("850x750")
+    Label(screen12, text="RETURN BOOK", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 20 bold").pack(fill=X)
+    Label(screen12, text="\n", bg='gray15').pack()
+    Label(screen12, text="Book Name", bg='gray15', fg = 'gray75', font="roboto 15 bold").pack()
+    Label(screen12, text="\n", bg='gray15').pack()
+    global ask
+    ask = StringVar()
+    e1 = Entry(screen12, textvariable = ask, bg= "gray75", fg="gray15", font="arial 12", width=30).pack()
+    Label(screen12, text="\n", bg='gray15').pack()
+    Button(screen12, text="Return", bg="gray15", fg="gray75", font="serif 13 bold",command = rtnbk).pack()
 
 def gtbk():
     screen11 = Toplevel(screen)
-    ip = inp.get().upper()
+    ip = inp.get()
     output = []
     f = open("booklist.txt","r")
     g = open(f"{user1}books", "a+")
     for line in f:
-         if not ip in line:
-             output.append(line)
-         else:
-             Label()
-    g.write(f"{ip}\n")
+        if not ip in line:
+            output.append(line)
+            # a = g.writelines(line)
+        else:
+            print("done")
+    g.write(f"{g.writelines(line)}\n")
     g.close()
     f = open("booklist.txt", "w")
     f.writelines(output)
@@ -31,26 +76,29 @@ def gb():
     screen10.title("Lent Books")
     screen10.configure(background="gray15")
     screen10.geometry("850x750")
-    Label(screen10,text="GET BOOKS",bg="gray20",fg="gray75",font="serif 12 bold").pack(fill=X)
+    Label(screen10,text="GET BOOKS", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 20 bold").pack(fill=X)
     Label(screen10,text="\n",bg="gray15").pack()
-    Label(screen10,text="Book Name",bg="gray20",fg="gray75",font="serif 9 bold").pack()
+    Label(screen10,text="Book Name",bg="gray15",fg="gray75",font="serif 15 bold").pack()
     Label(screen10,text="\n",bg="gray15").pack()
     global inp
-    inp = StringVar()
-    Entry(screen10,text=inp,bg="gray15",fg="gray75",font="serif 8 bold").pack()
+    inp = IntVar()
+    Entry(screen10,text=inp,bg="gray75",fg="black",font="serif 15 bold").pack()
     Label(screen10,text="\n",bg="gray15").pack()
-    Button(screen10,text="Get",bg="gray20",fg="gray75",font="serif 7 bold", command=gtbk).pack()
+    Button(screen10,text="Get",bg="gray20",fg="gray75",font="serif 12 bold", command=gtbk).pack()
     
-    Button(screen10, text="×",bg="gray15",fg="red", font="Roboto 10 bold",border=3, highlightbackground="red",command=screen10.destroy).pack(anchor="ne")
+    Button(screen10, text="×",bg="gray15",fg="orange", font="Roboto 12 bold",border=3, highlightbackground="red",command=screen10.destroy).pack(anchor="ne")
     
 
 
 def newbook():
+    boid = bid.get()
     nb = bken.get()
+    ndb = bkendata.get()
     f = open("booklist.txt","a+")
-    adb = f.write("{"+nb.upper()+"}"+"\n")
-    Label(screen9,text=f"\"{nb.upper()}\"\n, added successfully",font="serif 8 bold",bg="gray15",fg="yellow").pack()
+    adb = f.write(f"{boid}. [{nb.upper()}, {ndb.upper()}]\n")
+    Label(screen9,text=f"\"{boid}.{nb.upper()}\"\n added successfully",font="serif 8 bold",bg="gray15",fg="yellow").pack()
     bken.set("")
+    bkendata.set("")
 
 
 def bklist():
@@ -74,16 +122,29 @@ def addBook():
     screen9.geometry("850x750")
     screen9.title("Add Book")
     screen9.configure(background="gray15")
-    global bken
+    global bken, bkendata, bid
+    bid = IntVar()
     bken = StringVar()
+    bkendata = StringVar()
     adbk = open("booklist.txt","a+")
-    Label(screen9,text="ADD BOOK",font="serif 20 bold",bg="gray20",fg="gray75").pack()
+    Label(screen9,text="ADD BOOK", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 20 bold").pack(fill=X)
     Label(screen9,text="\n",bg="gray15").pack()
-    Label(screen9,text="Enter book name",bg="gray20",fg="gray75", font="serif 13 bold").pack()
+    Label(screen9,text="Enter book ID",bg="gray15",fg="gray75", font="serif 13 bold").pack()
     Label(screen9,text="",bg="gray15").pack()
-    bkentry= Entry(screen9,text=bken, width=25).pack(padx=7)
+    bkentry= Entry(screen9,text=bid, width=30,font="serif 12").pack(padx=7)
     Label(screen9,text="",bg="gray15").pack()
-    Button(screen9,text="Submit", font="serif 8 bold",bg="gray15",fg="gray75",command=newbook).pack()
+
+    Label(screen9,text="Enter book name",bg="gray15",fg="gray75", font="serif 13 bold").pack()
+    Label(screen9,text="",bg="gray15").pack()
+    bkentry= Entry(screen9,text=bken, width=30,font="serif 12").pack(padx=7)
+    Label(screen9,text="",bg="gray15").pack()
+
+    Label(screen9,text="Enter book data",bg="gray15",fg="gray75", font="serif 13 bold").pack()
+    Label(screen9,text="",bg="gray15").pack()
+    bkdentry= Entry(screen9,text=bkendata, width=30,font="serif 12").pack(padx=7)
+    Label(screen9,text="",bg="gray15").pack()
+
+    Button(screen9,text="Submit", font="serif 11 bold",bg="gray15",fg="gray75",command=newbook).pack()
     
     
     Button(screen9, text="Close",bg="gray15",fg="red", font="Roboto 7 bold",border=3, highlightbackground="red",command=screen9.destroy).pack(anchor="ne")
@@ -255,18 +316,20 @@ def login_success():
     screen4.title("Login Success")
     screen4.geometry("850x750")
     screen4.configure(background="gray15")
-    Label(screen4, text="HRK-LIBRARY", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 10 bold").pack()
+    Label(screen4, text="HRK-LIBRARY", bg="gray20",fg="gray75",width="25", height="2",font="Roboto 20 bold").pack(fill=X)
     Label(screen4,text="\n",bg="gray15").pack()
-    Button(screen4,text="Add Book",bg="gray15", font="Roboto 10 bold",fg="gray60", borderwidth=4,command=addBook).pack()
+    Button(screen4,text="Add Book",bg="gray15", font="Roboto 15 bold",fg="gray60", borderwidth=4,command=addBook).pack()
     Label(screen4,text="\n",bg="gray15").pack()
-    Button(screen4,text="Get Book",bg="gray15", font="Roboto 10 bold",fg="gray60", borderwidth=4,command=gb).pack()
+    Button(screen4,text="Get Book",bg="gray15", font="Roboto 15 bold",fg="gray60", borderwidth=4,command=gb).pack()
     Label(screen4,text="\n",bg="gray15").pack()
     
-    Button(screen4,text="Book List",bg="gray15", font="Roboto 10 bold",fg="gray60", borderwidth=4, command=bklist).pack()
+    Button(screen4,text="Book List",bg="gray15", font="Roboto 15 bold",fg="gray60", borderwidth=4, command=bklist).pack()
     Label(screen4,text="\n",bg="gray15").pack()
-    Button(screen4,text="Return Book",bg="gray15", font="Roboto 10 bold",fg="gray60", borderwidth=4,command=rtrn).pack()
+    Button(screen4,text="My Books",bg="gray15", font="Roboto 15 bold",fg="gray60", borderwidth=4, command=mylib).pack()
+    Label(screen4,text="\n",bg="gray15").pack()
+    Button(screen4,text="Return Book",bg="gray15", font="Roboto 15 bold",fg="gray60", borderwidth=4,command=rtrn).pack()
     Label(screen4,text="\n\n",bg="gray15").pack()
-    Button(screen4, text="close",bg="gray15",font="Roboto 8 bold",fg="red", command=delete2).pack(anchor="se")
+    Button(screen4, text="close",bg="gray15",font="Roboto 11 bold",fg="orange", command=delete2).pack(anchor="s")
     
     
 def pass_not_reco():
@@ -462,12 +525,11 @@ def check(event=''):
         time.sleep(3)
         statusvar.set("Ready Now")
 
-def rshp(args):
+def rshp(event = ''):
     pg = password.get()
-    if args == 1:
-        rsp.config(text = f'{pg}')
-    else:
-        rsp.config(text = 'Show Password ?')
+    rsp.config(text = f'{pg}')
+def rshp1(event = ''):
+    rsp.config(text = 'Show Password ?')
 
 
 def submit ():
@@ -547,11 +609,14 @@ def register (event=''):
     Label(screen1,text="Password*",bg="gray15",fg='gray60',font="serif 15 italic", underline=4).pack()
     password_entry=Entry(screen1, textvariable=password,bg="gray50",border=2,highlightcolor="yellow",fg="gray0",show="•",width=40,font="arial 12 bold",justify=CENTER)
     password_entry.pack(padx=10,pady=10)
+    password_entry.config(validatecommand=check)
     password_entry.bind("<Return>", check)
-    rsp = Button(screen1,text="Show Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1,relief=FLAT, command=lambda:rshp(1))
-    rsp1 = Button(screen1,text="Hide Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1, command=lambda:rshp(2))
+    rsp = Button(screen1,text="Show Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1,relief=FLAT, command=rshp)
+    rsp1 = Button(screen1,text="Hide Password ?",fg="gray60",bg="gray15",font="serif 10 italic", width=15, height=1, command=rshp1)
     rsp.pack(anchor="n",pady=5)
     rsp1.pack(anchor="n",pady=5)
+    rsp.bind("<Return>", rshp)
+    rsp1.bind("<Return>", rshp1)
     
     Label(screen1,text="Password must contain 8 character's (12+ recommended):\n• Atleast 1-Uppercase\n• Atleast 1-Lowercase\n• Atleast 1-Special Character\nAtleast 1-number\nTo best security.",bg="gray15",fg="gray75", highlightbackground="gray15",highlightthickness=3,font="serif 10 bold").pack()
 

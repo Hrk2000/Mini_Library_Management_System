@@ -1,20 +1,26 @@
 
-#Version 2.1.0:
+
+# Versio 2.2.1:
+* Update the Login Window
+* Minor Bug Fixed
+
+
+# Version 2.1.0:
 * Not open the file directly. (Use cmd , powershell or linux shell)
 * Issue solved:
 • while registeration (Permission denied, while saving the file)
 
 
-#Version 2.0.5:
+# Version 2.0.5:
 * Update the forget password window.
 * Some bug fixes (while updating password).
 * Update some designing of windows.
 
 
-#Version 2.0:
+# Version 2.0:
 * Update the Registeration Window
 * Update the Login Window
-   • Update the forgot password in the login window (90% done , 10% for designing(comming soon))
+* Update the forgot password in the login window (90% done , 10% for designing(comming soon))
 * Show  and Hide password is now available for registration and login window.
 
 
