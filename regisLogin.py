@@ -488,8 +488,8 @@ def submit ():
         # print(encrypt)
 
     f = open(f"{username_info}","w")
-    psaver = open(f"{username_info}"+".txt", "w")
     f.write(f"{name_info}\n{cont_info}\n{username_info}")
+    psaver = open(f"{username_info}"+".txt", "w")
     psaver.write(f"{encrypt}")
     a = tmsg.showinfo("Success",f"Name: {name_info}\nContact: {cont_info}\nUser-ID: {username_info}\nPassword: {password_info}\n")
     f.close()

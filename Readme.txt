@@ -1,4 +1,11 @@
 
+Version 2.1.0:
+* Not open the file directly. (Use cmd , powershell or linux shell)
+* Issue solved:
+• while registeration (Permission denied)
+• Images:
+
+
 Version 2.0.5:
 * Update the forget password window.
 * Some bug fixes (while updating password).
@@ -8,16 +15,11 @@ Version 2.0.5:
 Version 2.0:
 * Update the Registeration Window
 * Update the Login Window
-   â€¢ Update the forgot password in the login window (90% done , 10% for designing(comming soon))
+   • Update the forgot password in the login window (90% done , 10% for designing(comming soon))
 * Show  and Hide password is now available for registration and login window.
 
 
 This is a mini project of Library Management.
-
 It is now in progress and for now i haven't committed any text upper the code.
-
 So, you can check for now it works perfectly.
-
 If any occurs please comment me or commit.
-
-Login as well as all functions that is inside the Login will be comming soon ... within 15 days.
