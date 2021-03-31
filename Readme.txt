@@ -2,7 +2,7 @@
 Version 2.1.0:
 * Not open the file directly. (Use cmd , powershell or linux shell)
 * Issue solved:
-• while registeration (Permission denied)
+• while registeration (Permission denied, while saving the file)
 
 
 Version 2.0.5:
